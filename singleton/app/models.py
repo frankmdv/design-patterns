@@ -38,9 +38,10 @@ class Database:
 
         return results
 
-    def insert(self, sentence):
+    def insert(self, *args):
         cursor = self._connection.cursor()
-        cursor.execute(sentence)
+        for sentence in args:
+            cursor.execute(sentence)
 
         self._connection.commit()
 
