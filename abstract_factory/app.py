@@ -1,31 +1,25 @@
-from flask import Flask, render_template
-from abstractFactory import *
+from flask import Flask, render_template, request
+from models import MedievalFactory, FantasyFactory
+
 
 app = Flask(__name__)
 
 
-
-@app.route('/')
+@app.route("/", methods=["GET", "POST"])
 def index():
+    platoon = []
+    if request.method == "POST":
+        platoon_type = request.form.get("platoon-type")
 
-    medieval_factory = MedievalFactory()
-    player1_unit = medieval_factory.create_unit()
-    player2_building = medieval_factory.create_building()
-    result_medieval = {
-        "player1": player1_unit.attack(),
-        "player2": player2_building.produce_unit().attack()
-    }
+        factory = MedievalFactory()
 
-    fantasy_factory = FantasyFactory()
-    player1_unit = fantasy_factory.create_unit()
-    player2_building = fantasy_factory.create_building()
-    result_fantasy = {
-        "player1": player1_unit.attack(),
-        "player2": player2_building.produce_unit().attack()
-    }
+        if platoon_type == "Fantasy":
+            factory = FantasyFactory()
 
-    return render_template('index.html', result_medieval=result_medieval, result_fantasy=result_fantasy)
+        platoon += [
+            factory.create_knight(),
+            factory.create_archer(),
+            factory.create_wizard(),
+        ]
 
-
-if __name__ == '__main__':
-    app.run(debug=True)
+    return render_template("index.html", platoon=platoon)

@@ -1,17 +1,35 @@
 <!DOCTYPE html>
-<html>
-<head>
-    <title>Juego de Estrategia</title>
-</head>
-<body>
-    <h1>Resultados del Juego de Estrategia</h1>
+<html lang="en">
+  <head>
+    <title></title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- <link href="css/style.css" rel="stylesheet"> -->
+  </head>
+  <body>
+    <form method="post">
+      <h2>Platoon Type</h2>
+      <div>
+        <label>
+          Medieval
+          <input type="radio" name="platoon-type" value="Medieval" />
+        </label>
+        <label>
+          Fantasy
+          <input type="radio" name="platoon-type" value="Fantasy" />
+        </label>
+      </div>
+      <input type="submit" value="Choose Platoon" />
+    </form>
 
-    <h2>Tema Medieval:</h2>
-    <p>Player 1: {{ result_medieval.player1 }}</p>
-    <p>Player 2: {{ result_medieval.player2 }}</p>
+    {% if request.method == 'POST' %}
+    <section>
+      <h2>{{ request.form.get('platoon-type') }} Platoon</h2>
 
-    <h2>Tema de Fantasía:</h2>
-    <p>Player 1: {{ result_fantasy.player1 }}</p>
-    <p>Player 2: {{ result_fantasy.player2 }}</p>
-</body>
+      {% for unit in platoon %}
+      <p>{{ unit.attack() }}</p>
+      {% endfor %}
+    </section>
+    {% endif %}
+  </body>
 </html>
